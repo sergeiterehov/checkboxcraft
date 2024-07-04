@@ -1,0 +1,9 @@
+.StatusBar {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1024px;
+  margin: 8px;
+  font-size: 0.8em;
+  color: var(--ColorTextSecondary)
+}

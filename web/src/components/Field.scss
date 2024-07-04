@@ -1,0 +1,10 @@
+.Field {
+  position: relative;
+  overflow: auto;
+  border: solid 1px var(--ColorBorder);
+
+  &-line {
+    position: absolute;
+    display: flex;
+  }
+}
