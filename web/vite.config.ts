@@ -4,6 +4,8 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { viteSingleFile } from "vite-plugin-singlefile";
 
+const secure = process.env.HTTPS === "YES";
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), viteSingleFile()],
@@ -19,14 +21,13 @@ export default defineConfig({
     },
   },
   preview: {
-    port: 8080,
+    port: secure ? 443 : 80,
     strictPort: true,
-    https:
-      process.env.HTTPS === "YES"
-        ? {
-            cert: fs.readFileSync(process.env.HTTPS_CERT || "../ssl/https.crt"),
-            key: fs.readFileSync(process.env.HTTPS_KEY || "../ssl/https.key"),
-          }
-        : undefined,
+    https: secure
+      ? {
+          cert: fs.readFileSync(process.env.HTTPS_CERT || "../ssl/https.crt"),
+          key: fs.readFileSync(process.env.HTTPS_KEY || "../ssl/https.key"),
+        }
+      : undefined,
   },
 });

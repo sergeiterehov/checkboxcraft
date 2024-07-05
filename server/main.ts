@@ -1,3 +1,4 @@
+import * as express from "express";
 import { Server } from "socket.io";
 import { Field } from "./field";
 
@@ -31,3 +32,23 @@ io.on("connection", (socket) => {
     io.emit("write", index, value, time);
   });
 });
+
+// Редирект HTTP -> HTTPS
+
+const secure = process.env.HTTPS === "YES";
+
+if (secure) {
+  const insecureApp = express();
+
+  insecureApp.use((req, res) => {
+    res.status(301);
+    res.header("Location", `https://${req.hostname}${req.path}`);
+    res.end();
+  });
+
+  try {
+    insecureApp.listen(80);
+  } catch (e) {
+    console.log(`Не смог запустить небезопасный сервер: ${e}`);
+  }
+}

@@ -61,7 +61,8 @@ RUN npm ci --production
 
 COPY ./run.sh /app
 
-EXPOSE 8080
+EXPOSE 443
+EXPOSE 80
 
 WORKDIR /app
 CMD ["sh", "run.sh"]
