@@ -1,11 +1,9 @@
 import { Server } from "socket.io";
 import { Field } from "./field";
-import { History } from "./history";
 
 const io = new Server(3000, { path: "/api" });
 
-const field = new Field();
-const history = new History();
+const field = new Field(process.env.FIELD_FILE || "field.bin");
 
 io.on("connection", (socket) => {
   console.log("Connected", socket.id);
@@ -26,8 +24,6 @@ io.on("connection", (socket) => {
 
     const time = Date.now();
 
-    // Сохраняем историю
-    history.append(index, value, time);
     // Сохраняем состояние
     field.write(index, value, time);
 

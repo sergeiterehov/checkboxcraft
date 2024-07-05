@@ -1,3 +1,4 @@
 .dockerignore
 Dockerfile
-node_modules
+**/node_modules
+server/field.bin

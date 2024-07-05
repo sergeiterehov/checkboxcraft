@@ -5,4 +5,4 @@ build_linux:
 	docker build --platform linux/amd64 -t sergeiterehov/checkboxcraft .
 
 run:
-	docker run --rm -t --name checkboxcraft -p 8080:8080 -d sergeiterehov/checkboxcraft
+	docker run --rm --name checkboxcraft -p 443:8080 -v /var/checkboxcraft:/var/checkboxcraft -d sergeiterehov/checkboxcraft

@@ -1,7 +1,8 @@
 import { throttle } from "lodash";
 import * as fs from "node:fs";
 
-const filename = "field.bin";
+// Период сброса данных на диск
+const flushFilePeriodMs = 5000;
 
 export class Field {
   readonly amount = 1000000;
@@ -9,9 +10,9 @@ export class Field {
   data: Buffer;
   time = Date.now();
 
-  constructor() {
-    if (fs.existsSync(filename)) {
-      this.data = fs.readFileSync(filename);
+  constructor(private _filename: string) {
+    if (fs.existsSync(this._filename)) {
+      this.data = fs.readFileSync(this._filename);
     } else {
       this.data = Buffer.alloc(this.amount / 8);
     }
@@ -29,9 +30,9 @@ export class Field {
     this._flushThrottled();
   }
 
-  private _flushThrottled = throttle(() => this.flush());
+  private _flushThrottled = throttle(() => this._flush(), flushFilePeriodMs);
 
-  private flush() {
-    fs.writeFileSync(filename, this.data);
+  private _flush() {
+    fs.writeFile(this._filename, this.data, () => null);
   }
 }

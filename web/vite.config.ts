@@ -1,4 +1,5 @@
 import path from "node:path";
+import fs from "node:fs";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { viteSingleFile } from "vite-plugin-singlefile";
@@ -19,5 +20,13 @@ export default defineConfig({
   },
   preview: {
     port: 8080,
+    strictPort: true,
+    https:
+      process.env.HTTPS === "YES"
+        ? {
+            cert: fs.readFileSync(process.env.HTTPS_CERT || "../ssl/https.crt"),
+            key: fs.readFileSync(process.env.HTTPS_KEY || "../ssl/https.key"),
+          }
+        : undefined,
   },
 });
